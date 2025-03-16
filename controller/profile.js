@@ -33,7 +33,7 @@ const getProfile = (req,res) => {
 }
 const verification = async (req, res) => {
     try {
-        console.log(req.body.saltRounds)
+        console.log("body",req.body)
         if (!req.body.saltRounds) {
             return res.status(404).send("Salt rounds not found");
         }
@@ -48,7 +48,6 @@ const verification = async (req, res) => {
         return res.status(500).send("Error while encryption");
     }
 };
-
 module.exports = {
     getHealth,
     getProfile,
