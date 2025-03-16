@@ -33,6 +33,7 @@ const getProfile = (req,res) => {
 }
 const verification = async (req, res) => {
     try {
+        console.log(req.body.saltRounds)
         if (!req.body.saltRounds) {
             return res.status(404).send("Salt rounds not found");
         }
