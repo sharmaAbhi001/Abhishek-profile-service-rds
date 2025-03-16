@@ -31,21 +31,22 @@ const getProfile = (req,res) => {
         return res.status(500).send("Error getting profile data");
     }
 }
-const verification = async (req,res) => {
-    if(!req.body.salt){
-        return res.status(404).send("Salt not found");
-    }
-    try{
-        const cryptingToken = req.body.salt;
-        const hash = await bcrypt.hash(process.env.CHAIN_CODE,cryptingToken);
-        res.send( JSON.stringify({
-            hash: hash
-        }));
+const verification = async (req, res) => {
+    try {
+        if (!req.body.saltRounds) {
+            return res.status(404).send("Salt rounds not found");
+        }
+
+        const saltRounds = parseInt(req.body.saltRounds);
+        const salt = await bcrypt.genSalt(saltRounds);  
+        const hash = await bcrypt.hash(process.env.CHAIN_CODE, salt);
+
+        res.send(JSON.stringify({ hash: hash }));
     } catch (err) {
         console.error(`Error while verification: ${err}`);
         return res.status(500).send("Error while encryption");
     }
-}
+};
 
 module.exports = {
     getHealth,
